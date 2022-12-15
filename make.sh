@@ -25,7 +25,9 @@ then
         ;;
         cdc)
             mkdir -p build
-            pandoc -F mermaid-filter cdc/cdc.md -o build/cdc.pdf
+            cd cdc
+            pandoc --pdf-engine-opt=--enable-local-file-access -F mermaid-filter -t html --css=pandoc.css -c pandoc.css cdc.md -o ../build/cdc.pdf 
+            cd ..
         ;;
         clean)
             rm -r -f build
