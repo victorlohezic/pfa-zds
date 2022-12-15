@@ -2,7 +2,14 @@
 title: "Cahier des charges"
 ...
 
-# Cahier des charges Module de recherche
+## Organisation des publications
+
+### Contexte
+Récemment, une réflexion a été menée sur l'organisation des contenus (tutoriels, articles et billets), afin qu’elle soit plus facile à comprendre pour les visiteurs et plus souple à utiliser pour les auteurs, modérateurs et validateurs, tout en préservant l’exigence de qualité pour les publications validées et la facilité d’expression actuelle des billets.
+Les propositions retenues sont présentées dans un sujet du forum. Ces propositions ont été découpées en différentes tâches à réaliser, visibles sur une page de suivi sur GitHub. Certaines tâches ont été déjà été réalisées. Vous pouvez choisir de travailler sur les tâches qu'il reste à réaliser pour ce chantier.
+La majorité de ces tâches ne sont qu'à l'état d'idée ; la façon précise de les implémenter n'est pas encore définie. À vous de faire des propositions, de tester quelles peuvent être les meilleures implémentations, notamment d'un point de vue interface utilisateur.
+la recherche avec un moteur de recherche généraliste.
+
 
 ## Analyse fonctionnelle de l’organisation des publications
 
@@ -35,6 +42,14 @@ contraintes existantes
 formulaires pour les modifier
 
 ## Évolution du module de recherche 
+
+### Contexte
+Zeste de Savoir utilise Elasticsearch pour la recherche interne sur le site. Elasticsearch permet d'indexer le contenu du site (tutoriels, articles, billets, forums) et récupérer les résultats les plus pertinents pour les présenter à l'utilisateur. Le cœur du site s'interface en Python avec Elasticsearch afin de l'interroger et récupérer les résultats.
+Dans son état actuel, le module de recherche de Zeste de Savoir ne correspond pas complètement aux besoins du site :
+-    obsolescence de la version d'Elasticsearch utilisée, qui ne répond plus à nos exigences de sécurité ;
+-    absence de fonctionnalités désirables, comme la possibilité de rechercher des membres ou d'effectuer des recherches plus fines ;
+-    pertinence des résultats non-optimale, qui fait que- la recherche interne du site est rarement au niveau de la recherche avec un moteur de recherche généraliste.
+
 ### Bête à cornes (qui permet d’exprimer la recherche du besoin.)
 
 ```mermaid
@@ -48,8 +63,8 @@ flowchart TB
 
 ```mermaid
 flowchart TB
-    FP1[Utilisateur]--FP ---C;
-    FP2[Contenus]--FP2 ---C;
+    FP1[Utilisateur]==FP ===C;
+    FP2[Contenus]==FP ===C;
     A[Membres]--FC1 ---C;
     B[Articles]--FC2 ---C[Module de recherche];
     C[Module de recherche]--FC3 ---D[Messages du forum];
@@ -62,6 +77,7 @@ flowchart TB
 
 | Id fonction  | Explication          | 
 | :--------------- |:---------------:| 
+| FP  |   Rechercher du contenu de manière rapide et pertinente à parti de mot-clés        | 
 | FC1  |   Rechercher un membre        | 
 | FC2  |   Rechercher un article        | 
 | FC3  |   Rechercher un message de forum        | 
@@ -76,9 +92,11 @@ flowchart TB
 
 ### Diagramme FAST 
 
+![FAST pour l'organisation des publications](./img/fast_elasticsearch.png)
+
 ```mermaid
 flowchart TB
-    FS1[Fonction de service 1]-->FT1[Explorer les contenus];
+    FS1[<font size=16>Fonction de service 1]-->FT1[Explorer les contenus];
 
     FT1[Explorer les contenus]-->FT11[Indiquer le contenu à parcourir];
 
@@ -113,4 +131,11 @@ flowchart TB
     FT215[Vérifier la popularité du contenu]-->S[Moteur de recherche];
 
     FT41[Afficher les résultats selon l'ordre de pertinence]-->S[Moteur de recherche];
+    
 ```
+
+### Différentes solutions à étudier et à comparer
+- [ElasticSearch](https://www.elastic.co/fr/elasticsearch/)
+- [Algolia](https://www.algolia.com/fr/)
+- [Meilisearch](https://www.meilisearch.com/)
+- [Typesense](https://typesense.org/)
